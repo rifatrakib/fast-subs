@@ -1,4 +1,5 @@
 import zipfile
+from pathlib import Path
 from typing import Union
 
 import uvicorn
@@ -18,6 +19,22 @@ def create_app(name: str):
     env_path = f"{extract_path}/.env"
     with open(env_path, "w") as writer:
         writer.write(f"APP_NAME={name}\nMODE=development\n")
+
+
+@app.command()
+def create_router(app: str, name: str):
+    modules = [
+        "database",
+        "models",
+        "routes",
+        "schemas/database",
+        "schemas/requests",
+        "schemas/responses",
+    ]
+
+    for module in modules:
+        router_path = f"server/apps/{app}/server/{module}/{name}.py"
+        Path(router_path).touch()
 
 
 @app.command()
