@@ -1,15 +1,20 @@
 import os
+from functools import lru_cache
 
 from ..config.factory import settings
 from ..services.validators import Tags
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-cwd = os.getcwd()
-root = current_dir.replace(f"{cwd}\\", "")
+
+@lru_cache
+def get_root_dir():
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    cwd = os.getcwd()
+    root = current_dir.replace(f"{cwd}\\", "")
+    return root
 
 
 def retrieve_api_metadata():
-    with open(f"{root}/README.md") as reader:
+    with open(f"{get_root_dir()}/README.md") as reader:
         description = reader.read()
 
     api_metadata = {

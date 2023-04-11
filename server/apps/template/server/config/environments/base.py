@@ -1,8 +1,13 @@
+from functools import lru_cache
 from pathlib import Path
 
 from pydantic import BaseSettings
 
-source = Path(__file__).parent.parent.parent.parent.resolve()
+
+@lru_cache
+def get_source() -> str:
+    source = Path(__file__).parent.parent.parent.parent.resolve()
+    return f"{source}/.env"
 
 
 class BaseConfig(BaseSettings):
@@ -10,4 +15,4 @@ class BaseConfig(BaseSettings):
     MODE: str
 
     class Config:
-        env_file = f"{source}/.env"
+        env_file = get_source()
