@@ -22,6 +22,23 @@ def create_app(name: str):
 
 
 @app.command()
+def rename_app(old_name: str, new_name: str):
+    path = Path(f"server/apps/{old_name}")
+    path.rename(f"server/apps/{new_name}")
+
+    env_path = f"server/apps/{new_name}/.env"
+    with open(env_path, "r") as reader:
+        lines = reader.readlines()
+        for idx, line in enumerate(lines):
+            if line.startswith("APP_NAME="):
+                break
+
+    lines[idx] = f"APP_NAME={new_name}\n"
+    with open(env_path, "w") as writer:
+        writer.write("".join(lines))
+
+
+@app.command()
 def create_router(app: str, name: str):
     modules = [
         "database",
