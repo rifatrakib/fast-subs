@@ -73,3 +73,27 @@ python manage.py start-server
 ```
 
 That's it! You can now create and manage sub-applications using the CLI app and mount them on the central fastapi application as needed, and run the main app or the sub-applications as you like.
+
+## Limitations
+
+This project is intended to demonstrate a way to organize multiple FastAPI sub-applications together. However, it has some potential drawbacks and challenges:
+
+For example, the most problematic matter for this project is that the sub-applications do not have a separate virtual environment, which can lead to version conflicts or other issues when they share the same dependencies. However, this limitation can be mitigated by containerizing the sub-applications separately using Docker and running them independently or as a Kubernetes cluster. When mounted on the central FastAPI application, the sub-applications will share the same virtual environment, which may or may not be desirable depending on your use case.
+
+To summarize, some limitations and drawbacks with this setup are:
+
+* The structure of the sub-applications may not be ideal for some use cases. Each sub-application is essentially a separate FastAPI application, so if you have a lot of sub-applications, this could lead to a lot of duplicated code or difficulty in managing dependencies.
+
+* There may be security concerns with running multiple sub-applications in the same virtual environment. If one sub-application is compromised, it could potentially affect the others as well.
+
+* Because each sub-application is a separate FastAPI application, there may be some overhead or performance implications when they are mounted on the central FastAPI application.
+
+* Managing the different configurations and environments for each sub-application can be complex and time-consuming, particularly as the number of sub-applications grows.
+
+* There may be compatibility issues between different sub-applications or between the sub-applications and the central FastAPI application, particularly when upgrading dependencies or making changes to the codebase.
+
+* Depending on the size and complexity of the sub-applications, containerizing them separately using Docker may require additional resources or expertise.
+
+* If the sub-applications need to communicate with each other, additional setup or configuration may be required to establish a connection between them.
+
+* If a sub-application needs to be updated or modified, it may require updating or modifying the central FastAPI application as well, which can add additional complexity to the development process.
